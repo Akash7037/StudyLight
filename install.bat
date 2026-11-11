@@ -19,6 +19,10 @@ if not exist "%~dp0studylight.bat" (
     echo ERROR: studylight.bat is missing. Keep it beside install.bat.
     exit /b 1
 )
+if not exist "%~dp0uninstall.ps1" (
+    echo ERROR: uninstall.ps1 is missing. Keep it beside install.bat.
+    exit /b 1
+)
 
 set "PYTHON="
 where py >nul 2>nul
@@ -61,6 +65,11 @@ if errorlevel 1 (
     echo ERROR: Could not copy studylight.bat.
     exit /b 1
 )
+copy /Y "%~dp0uninstall.ps1" "%INSTALL_DIR%\uninstall.ps1" >nul
+if errorlevel 1 (
+    echo ERROR: Could not copy uninstall.ps1.
+    exit /b 1
+)
 
 if not exist "%INSTALL_DIR%\.venv\Scripts\python.exe" (
     echo Creating a private Python environment...
@@ -91,8 +100,8 @@ echo.
 echo Installation complete!
 echo Close and reopen Command Prompt, then type: studylight
 echo The command runs until you press Ctrl+C in its terminal.
-echo Share install.bat, screen.py, requirements.txt, and studylight.bat with friends.
-echo Each friend should extract all four files into one folder and run install.bat.
+echo Share install.bat, screen.py, requirements.txt, studylight.bat, and uninstall.ps1 with friends.
+echo Each friend should extract all five files into one folder and run install.bat.
 echo.
 pause
 exit /b 0

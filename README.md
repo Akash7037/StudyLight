@@ -13,6 +13,7 @@ StudyLight is a small Windows command-line utility for quickly changing display 
 - Show or hide a fullscreen white screen.
 - Install dependencies in a dedicated Python virtual environment.
 - Register the command in your user PATH with the included installer.
+- Uninstall the installed app and remove its user PATH entry from the command line.
 
 ## Requirements
 
@@ -57,9 +58,21 @@ If Python is not installed, install Python 3 first and enable **Add Python to PA
 
 The normal brightness is set to **15%** by default. To change it, edit `CUSTOM_BRIGHTNESS` near the top of `screen.py`, then run `install.bat` again so the installed copy is updated.
 
+## Uninstall
+
+Close any other running StudyLight sessions, open a **new** Command Prompt, and run:
+
+```cmd
+studylight --uninstall
+```
+
+This removes StudyLight's installed files and private virtual environment from `%LOCALAPPDATA%\Programs\StudyLight`, and removes that directory from your user PATH. The file cleanup runs in the background so Windows can release the command file before deleting its installation directory. Open a new Command Prompt afterward to refresh PATH.
+
+The uninstaller does **not** remove Python, files in the original downloaded or cloned project folder, or anything else from your PATH. It prints a unique log-file path in case the background file cleanup fails.
+
 ## Share with a friend
 
-Share the project ZIP or repository link. The recipient should extract the ZIP, keep `install.bat`, `studylight.bat`, `screen.py`, and `requirements.txt` together, and run `install.bat`. Each Windows account needs to install StudyLight separately.
+Share the project ZIP or repository link. The recipient should extract the ZIP, keep `install.bat`, `studylight.bat`, `uninstall.ps1`, `screen.py`, and `requirements.txt` together, and run `install.bat`. Each Windows account needs to install StudyLight separately.
 
 ## Dependencies
 
