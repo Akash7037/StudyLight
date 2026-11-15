@@ -52,11 +52,15 @@ If Python is not installed, install Python 3 first and enable **Add Python to PA
 
 | Shortcut | Action |
 | --- | --- |
-| `Ctrl+Q` | Toggle the fullscreen white screen and maximum brightness |
-| `Ctrl+W` | Toggle brightness between the configured level and 100% |
+| `Ctrl+Shift+Q` | Toggle the fullscreen white screen and maximum brightness |
+| `Ctrl+Alt+B` | Toggle brightness between the detected starting level and 100% |
 | `Ctrl+C` | Exit StudyLight from the Command Prompt window |
 
-The normal brightness is set to **15%** by default. To change it, edit `CUSTOM_BRIGHTNESS` near the top of `screen.py`, then run `install.bat` again so the installed copy is updated.
+StudyLight uses the current display brightness as its normal level. If it cannot detect the current level, it falls back to **15%**. To change that fallback, edit `DEFAULT_BRIGHTNESS` near the top of `screen.py`, then run `install.bat` again so the installed copy is updated.
+
+## Energy use
+
+StudyLight waits on Tkinter's event loop while idle; it does not continuously poll the display. It also avoids sending a brightness-change request when the requested level already matches the detected or last successfully set level. For lower display power use, keep brightness at a comfortable lower level when possible. The fullscreen white screen and 100% brightness can use more energy, so use them only when needed.
 
 ## Uninstall
 

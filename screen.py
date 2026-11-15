@@ -1,4 +1,3 @@
-import time
 import keyboard
 import screen_brightness_control as sbc
 import tkinter as tk
@@ -26,25 +25,37 @@ def print_startup_help():
 
 
 def detect_starting_brightness():
-    global CUSTOM_BRIGHTNESS
+    global CUSTOM_BRIGHTNESS, current_brightness
     try:
         brightness = sbc.get_brightness()
         if isinstance(brightness, (list, tuple)):
-            brightness = brightness[0]
-        CUSTOM_BRIGHTNESS = int(float(brightness))
+            if not brightness:
+                raise ValueError("No display brightness values were returned")
+            values = [int(float(value)) for value in brightness]
+            CUSTOM_BRIGHTNESS = values[0]
+            if all(value == CUSTOM_BRIGHTNESS for value in values):
+                current_brightness = CUSTOM_BRIGHTNESS
+        else:
+            CUSTOM_BRIGHTNESS = int(float(brightness))
+            current_brightness = CUSTOM_BRIGHTNESS
     except Exception as e:
         print(f"Warning: Could not detect current brightness; using {DEFAULT_BRIGHTNESS}%: {e}")
 
 
 # Track whether the brightness is currently maxed out
 is_maxed = False
+current_brightness = None
 white_window = None
 white_screen_active = False
 
 def set_brightness(value):
-    global is_maxed
+    global is_maxed, current_brightness
+    if current_brightness == value:
+        is_maxed = value == 100
+        return
     try:
         sbc.set_brightness(value)
+        current_brightness = value
         is_maxed = value == 100
         print(f"Brightness set to {value}%")
     except Exception as e:
