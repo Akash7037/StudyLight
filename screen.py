@@ -19,7 +19,7 @@ def print_startup_help():
 """)
     print("StudyLight is running.")
     print(f"Starting brightness: {CUSTOM_BRIGHTNESS}%")
-    print("Ctrl+Q  Toggle a fullscreen white screen and maximum brightness.")
+    print("Ctrl+Shift+Q  Toggle a fullscreen white screen and maximum brightness.")
     print("Ctrl+Alt+B  Toggle brightness between the configured level and 100%.")
     print("Ctrl+C  Exit StudyLight from this terminal.")
     print()
@@ -88,7 +88,7 @@ except Exception as e:
 # Register hotkeys and run Tkinter on the main thread.
 root = tk.Tk()
 root.withdraw()
-keyboard.add_hotkey('ctrl+q', lambda: root.after(0, toggle_white_screen))
+keyboard.add_hotkey('ctrl+shift+q', lambda: root.after(0, toggle_white_screen))
 keyboard.add_hotkey('ctrl+alt+b', lambda: root.after(0, toggle_brightness))
 
 root.mainloop()
