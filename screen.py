@@ -4,7 +4,8 @@ import screen_brightness_control as sbc
 import tkinter as tk
 
 # --- CONFIGURATION ---
-CUSTOM_BRIGHTNESS = 15 # Set your preferred normal brightness level here
+DEFAULT_BRIGHTNESS = 15 # Fallback if the current brightness cannot be detected
+CUSTOM_BRIGHTNESS = DEFAULT_BRIGHTNESS
 # ---------------------
 
 
@@ -19,9 +20,20 @@ def print_startup_help():
     print("StudyLight is running.")
     print(f"Starting brightness: {CUSTOM_BRIGHTNESS}%")
     print("Ctrl+Q  Toggle a fullscreen white screen and maximum brightness.")
-    print("Ctrl+W  Toggle brightness between the configured level and 100%.")
+    print("Ctrl+Alt+B  Toggle brightness between the configured level and 100%.")
     print("Ctrl+C  Exit StudyLight from this terminal.")
     print()
+
+
+def detect_starting_brightness():
+    global CUSTOM_BRIGHTNESS
+    try:
+        brightness = sbc.get_brightness()
+        if isinstance(brightness, (list, tuple)):
+            brightness = brightness[0]
+        CUSTOM_BRIGHTNESS = int(float(brightness))
+    except Exception as e:
+        print(f"Warning: Could not detect current brightness; using {DEFAULT_BRIGHTNESS}%: {e}")
 
 
 # Track whether the brightness is currently maxed out
@@ -64,6 +76,7 @@ def toggle_white_screen():
         set_brightness(CUSTOM_BRIGHTNESS)
 
 
+detect_starting_brightness()
 print_startup_help()
 
 # Set the initial baseline brightness when the script starts
@@ -76,6 +89,6 @@ except Exception as e:
 root = tk.Tk()
 root.withdraw()
 keyboard.add_hotkey('ctrl+q', lambda: root.after(0, toggle_white_screen))
-keyboard.add_hotkey('ctrl+w', lambda: root.after(0, toggle_brightness))
+keyboard.add_hotkey('ctrl+alt+b', lambda: root.after(0, toggle_brightness))
 
 root.mainloop()
